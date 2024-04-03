@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,12 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import org.d3if3101.assesment1.R
-import org.d3if3101.assesment1.navigation.Screen
 import org.d3if3101.assesment1.ui.theme.Assesment1Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavHostController)
+fun QuizScreen(navController: NavHostController)
 {
     Scaffold(topBar = {
         TopAppBar(title =
@@ -40,13 +38,13 @@ fun MainScreen(navController: NavHostController)
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 titleContentColor = MaterialTheme.colorScheme.primary,
             ),
-            actions =
+            navigationIcon =
             {
-                IconButton(onClick = {navController.navigate(Screen.About.route)})
+                IconButton(onClick = {navController.popBackStack()})
                 {
                     Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = stringResource(id = R.string.tentang_aplikasi),
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(id = R.string.kembali),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -54,14 +52,12 @@ fun MainScreen(navController: NavHostController)
         )
     }
     ) { padding ->
-        ScreenContent(Modifier.padding(padding), navController)
+        QuizScreenContent(Modifier.padding(padding))
     }
-
-
 }
 
 @Composable
-fun ScreenContent(modifier: Modifier, navController: NavHostController)
+fun QuizScreenContent(modifier: Modifier)
 {
     Column (modifier = modifier
         .fillMaxSize()
@@ -70,25 +66,16 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController)
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
-        Text(text = stringResource(id = R.string.app_name))
-
-        Button(modifier = Modifier.padding(top = 16.dp),
-            onClick =
-            {
-                navController.navigate(Screen.Quiz.route)
-            },
-        )
-        {
-            Text(text = stringResource(id = R.string.mulai))
-        }
+        Text(text = "Ini Quiz")
     }
 }
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun ScreenPreview() {
+fun QuizScreenPreview()
+{
     Assesment1Theme {
-        MainScreen(rememberNavController())
+        QuizScreen(rememberNavController())
     }
 }

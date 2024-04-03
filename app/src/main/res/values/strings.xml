@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Quiz Bangun Datar</string>
     <string name="kembali">Kembali</string>
+    <string name="mulai">Mulai</string>
     <string name="tentang_aplikasi">Tentang Aplikasi</string>
     <string name="copyright">Quiz bangun datar merupakan sebuah aplikasi Android untuk melatih
         pengguna mengetahui bentuk-bentuk dan warna bangun datar</string>
