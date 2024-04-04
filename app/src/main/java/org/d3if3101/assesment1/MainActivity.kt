@@ -7,10 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import org.d3if3101.assesment1.model.BangunDatar
 import org.d3if3101.assesment1.navigation.SetUpNavGraph
 import org.d3if3101.assesment1.ui.theme.Assesment1Theme
 
 class MainActivity : ComponentActivity() {
+
+    private val data = getData()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -24,6 +28,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun getData(): List<BangunDatar>
+    {
+        return listOf(
+            BangunDatar("Lingkaran", R.drawable.lingkaran_),
+            BangunDatar("Segitiga", R.drawable.segitiga_),
+            BangunDatar("persegi", R.drawable.persegi_),
+            BangunDatar("persegi_panjang", R.drawable.persegi_panjang_),
+        )
     }
 }
 

@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,9 +42,11 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import org.d3if3101.assesment1.R
+import org.d3if3101.assesment1.model.Soal
 import org.d3if3101.assesment1.ui.theme.Assesment1Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,15 +82,9 @@ fun QuizScreen(navController: NavHostController)
 @Composable
 fun QuizScreenContent(modifier: Modifier)
 {
+    val viewModel: MainViewModel = viewModel()
+    val data = viewModel.data
     var nama by remember{ mutableStateOf("") }
-    val radioOptions = listOf(
-        stringResource(id = R.string.lingkaran),
-        stringResource(id = R.string.segitiga)
-    )
-
-    var jawaban1 by remember {
-        mutableStateOf(radioOptions[0])
-    }
 
     Column (modifier = modifier
         .fillMaxSize()
@@ -107,6 +106,52 @@ fun QuizScreenContent(modifier: Modifier)
             modifier = Modifier.fillMaxWidth()
         )
 
+        LazyColumn(modifier = Modifier.fillMaxWidth()
+        )
+        {
+            items(data)
+            {
+                ListSoal(soal = it)
+                Divider()
+            }
+        }
+
+        Button(onClick = {},
+            modifier = Modifier.padding(top = 8.dp),
+            contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+        )
+        {
+            Text(text = stringResource(id = R.string.submit))
+        }
+
+    }
+
+
+}
+
+@Composable
+fun ListSoal(soal: Soal)
+{
+    val radioOptions = listOf(
+        stringResource(id = soal.jawaban1),
+        stringResource(id = soal.jawaban2)
+
+    )
+
+    var jawaban1 by remember {
+        mutableStateOf(radioOptions[0])
+    }
+
+    Column (modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp),
+        //spacedBy untuk kasi space bagi setiap komponen di dalam kolom
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    )
+    {
+        Text(text = stringResource(id = R.string.soal, soal.id))
+
         Row (modifier = Modifier.padding(top = 20.dp))
         {
             radioOptions.forEach{text ->
@@ -123,13 +168,7 @@ fun QuizScreenContent(modifier: Modifier)
                 )
             }
         }
-        Button(onClick = {},
-            modifier = Modifier.padding(top = 8.dp),
-            contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
-        )
-        {
-            Text(text = stringResource(id = R.string.submit))
-        }
+
     }
 }
 
