@@ -30,15 +30,18 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -84,108 +87,174 @@ fun QuizScreen(navController: NavHostController)
 @Composable
 fun QuizScreenContent(modifier: Modifier)
 {
+    //view model untuk ambil data di MainViewModel
     val viewModel: MainViewModel = viewModel()
     val data = viewModel.data
+
     var nama by remember{ mutableStateOf("") }
+    var nilai by remember{ mutableIntStateOf(0) }
+    var keluarinTombol by remember {
+        mutableStateOf(false)
+    }
 
-    Column (modifier = modifier
-        .fillMaxSize()
-        .padding(16.dp),
-        //spacedBy untuk kasi space bagi setiap komponen di dalam kolom
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    )
+    //Kolom Halaman
+    Column(modifier = Modifier.fillMaxWidth())
     {
-        OutlinedTextField(value = nama,
-            onValueChange = {nama = it},
-            label = { Text(text = stringResource(id = R.string.nama))},
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Words,
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
-            ),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        LazyColumn(modifier = Modifier.fillMaxWidth()
+        //Kolom Nama
+        Column (modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            items(data)
-            {
-                ListSoal(soal = it)
+            OutlinedTextField(value = nama,
+                onValueChange = {nama = it},
+                label = { Text(text = stringResource(id = R.string.nama))},
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        //Kolom soal
+        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            items(data) { soal ->
+                ListSoal(soal = soal) { addedNilai ->
+                    nilai += addedNilai // Update nilai variable based on the callback from ListSoal
+                }
+
+                //bikin tombol submit muncul di soal paling terakhir
+                if (soal.id.toInt() == data.size)
+                {
+                    // Tombol submit
+                    Button(
+                        onClick = {
+                            keluarinTombol = true
+                        },
+                        modifier = Modifier.padding(16.dp),
+                        contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+                    ) {
+                        Text(text = stringResource(id = R.string.submit))
+                    }
+
+
+                    if(keluarinTombol)
+                    {
+                        Column(modifier = Modifier.padding(bottom = 20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        )
+                        {
+                            // Display total nilai text
+                            Text(
+                                text = stringResource(id = R.string.total_nilai, nilai),
+                                modifier = Modifier.padding(bottom = 16.dp),
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            //Tombol Share dan Reset
+                            Row(horizontalArrangement = Arrangement.spacedBy(12.dp))
+                            {
+                                //Reset
+                                Button(onClick = { /*TODO*/ },
+                                    contentPadding = PaddingValues(horizontal = 32.dp,
+                                        vertical = 16.dp)
+                                )
+                                {
+                                    Text(text = "Reset")
+                                }
+
+                                //Share
+                                Button(onClick = { /*TODO*/ },
+                                    contentPadding = PaddingValues(horizontal = 32.dp,
+                                        vertical = 16.dp)
+                                )
+                                {
+                                    Text(text = "Share")
+                                }
+                            }
+
+                        }
+
+                    }
+                }
                 Divider()
             }
         }
-
-        Button(onClick = {},
-            modifier = Modifier.padding(top = 8.dp),
-            contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
-        )
-        {
-            Text(text = stringResource(id = R.string.submit))
-        }
-
     }
-
-
 }
 
 @Composable
-fun ListSoal(soal: Soal)
-{
-    //Data Pilihan
+fun ListSoal(soal: Soal, onNilaiUpdated: (Int) -> Unit) {
+
+    val context = LocalContext.current
+    // Data Pilihan
     val radioOptions = listOf(
         stringResource(id = soal.jawaban1),
         stringResource(id = soal.jawaban2)
     )
 
-    var jawaban1 by remember {
-        mutableStateOf(radioOptions[0])
+    var jawaban by remember {
+        mutableStateOf("")
     }
 
-    Column (modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp),
-        //spacedBy untuk kasi space bagi setiap komponen di dalam kolom
+    var hasClicked by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        // spacedBy untuk kasi space bagi setiap komponen di dalam kolom
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
-        //Soal
+    ) {
+        // Soal
         Text(text = stringResource(id = R.string.soal, soal.id))
 
-        //Gambar
-        Image(painter = painterResource(id = soal.gambar),
+        // Gambar
+        Image(
+            painter = painterResource(id = soal.gambar),
             contentDescription = stringResource(id = R.string.gambar, soal.nama_gambar),
             contentScale = ContentScale.Crop,
             modifier = Modifier.size(132.dp)
 
         )
 
-        //Pilgan
+        // Pilgan
         Row ()
         {
-            radioOptions.forEach{text ->
-                Pilihan1(label = text,
-                    isSelected = jawaban1 == text,
+            radioOptions.forEach { text ->
+                Pilihan(
+                    label = text,
+                    isSelected = jawaban == text,
                     modifier = Modifier
                         .selectable(
-                            selected = jawaban1 == text,
-                            onClick = { jawaban1 = text },
-                            role = Role.RadioButton
+                            selected = jawaban == text,
+                            onClick = {
+                                jawaban = text
+                                if (!hasClicked && text == context.getString(soal.nama_gambar)) {
+                                    onNilaiUpdated(1) // Add value only if the question is not answered and it's correct
+                                    hasClicked = true // Mark the question as answered
+                                }
+                            },
+                            role = Role.RadioButton,
                         )
                         .weight(1f)
                         .padding(16.dp)
                 )
             }
         }
-
     }
 }
 
+
 @Composable
-fun Pilihan1(label: String, isSelected: Boolean, modifier: Modifier)
+fun Pilihan(label: String, isSelected: Boolean, modifier: Modifier)
 {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically

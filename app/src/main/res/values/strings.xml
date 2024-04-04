@@ -7,6 +7,7 @@
     <string name="lingkaran">Lingkaran</string>
     <string name="segitiga">Segitiga</string>
     <string name="persegi">Persegi</string>
+    <string name="total_nilai">Total Nilai: %1$s</string>
     <string name="persegi_panjang">Persegi Panjang</string>
     <string name="gambar">Gambar %1$s</string>
     <string name="soal">%1$s. Apakah nama bangun datar dibawah?</string>

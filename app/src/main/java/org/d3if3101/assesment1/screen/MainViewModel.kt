@@ -16,15 +16,13 @@ class MainViewModel : ViewModel ()
 
         data.add(Soal
             (1.toLong(),
-            R.drawable.lingkaran_,
-            "Lingkaran",
+            R.drawable.lingkaran_, R.string.lingkaran,
             R.string.lingkaran,
             R.string.persegi)
         )
         data.add(Soal
             (2.toLong(),
-            R.drawable.segitiga_,
-            "Segitiga",
+            R.drawable.segitiga_, R.string.segitiga,
             R.string.segitiga,
             R.string.persegi_panjang)
         )
