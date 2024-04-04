@@ -10,15 +10,21 @@ class MainViewModel : ViewModel ()
 
     private fun getDataDummy(): List<Soal>
     {
+        //Semua variable data ada di file Soal.kt
+
         val data = mutableListOf<Soal>()
 
         data.add(Soal
             (1.toLong(),
+            R.drawable.lingkaran_,
+            "Lingkaran",
             R.string.lingkaran,
             R.string.persegi)
         )
         data.add(Soal
             (2.toLong(),
+            R.drawable.segitiga_,
+            "Segitiga",
             R.string.segitiga,
             R.string.persegi_panjang)
         )

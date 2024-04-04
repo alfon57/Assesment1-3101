@@ -33,10 +33,10 @@ class MainActivity : ComponentActivity() {
     private fun getData(): List<BangunDatar>
     {
         return listOf(
-            BangunDatar("Lingkaran", R.drawable.lingkaran_),
-            BangunDatar("Segitiga", R.drawable.segitiga_),
-            BangunDatar("persegi", R.drawable.persegi_),
-            BangunDatar("persegi_panjang", R.drawable.persegi_panjang_),
+            BangunDatar(R.drawable.lingkaran_),
+            BangunDatar(R.drawable.segitiga_),
+            BangunDatar(R.drawable.persegi_),
+            BangunDatar(R.drawable.persegi_panjang_),
         )
     }
 }

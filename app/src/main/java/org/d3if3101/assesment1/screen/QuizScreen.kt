@@ -1,7 +1,7 @@
 package org.d3if3101.assesment1.screen
 
 import android.content.res.Configuration
-import androidx.compose.foundation.border
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
@@ -34,7 +35,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
@@ -132,10 +134,10 @@ fun QuizScreenContent(modifier: Modifier)
 @Composable
 fun ListSoal(soal: Soal)
 {
+    //Data Pilihan
     val radioOptions = listOf(
         stringResource(id = soal.jawaban1),
         stringResource(id = soal.jawaban2)
-
     )
 
     var jawaban1 by remember {
@@ -150,9 +152,19 @@ fun ListSoal(soal: Soal)
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
+        //Soal
         Text(text = stringResource(id = R.string.soal, soal.id))
 
-        Row (modifier = Modifier.padding(top = 20.dp))
+        //Gambar
+        Image(painter = painterResource(id = soal.gambar),
+            contentDescription = stringResource(id = R.string.gambar, soal.nama_gambar),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(132.dp)
+
+        )
+
+        //Pilgan
+        Row ()
         {
             radioOptions.forEach{text ->
                 Pilihan1(label = text,
@@ -182,12 +194,10 @@ fun Pilihan1(label: String, isSelected: Boolean, modifier: Modifier)
         RadioButton(selected = isSelected, onClick = null)
         Text(text = label,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier.padding(start = 2.dp)
         )
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
