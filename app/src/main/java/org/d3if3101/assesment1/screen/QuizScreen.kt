@@ -133,6 +133,7 @@ fun QuizScreenContent(modifier: Modifier)
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done
                 ),
+                enabled = tombolSubmit,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -149,7 +150,7 @@ fun QuizScreenContent(modifier: Modifier)
                     Button(
                         onClick = {
                             namaError = (nama == "")
-                            if (namaError) return@Button
+                            if (namaError || !soal.apakahDijawab) return@Button
                             // melihat apakah tiap soal ada jawaban benar atau tidak
                             nilai = data.sumOf { if (it.apakahBenar) it.poinSoal else 0 }
                             keluarinTombol = true
@@ -277,17 +278,17 @@ fun ListSoal(soal: Soal, cekSubmit: Boolean) {
                             onClick = {
                                 jawaban = text
 
-//                                if (text == context.getString(soal.namaGambar))
-//                                {
-//                                    soal.apakahBenar = true
-//                                }
-//                                else {
-//                                    soal.apakahBenar = false
-//                                }
-//                                disederhanakan jadi dibawah
-
-                                soal.apakahBenar = text == context.getString(soal.namaGambar)
+                                if (text == context.getString(soal.namaGambar))
+                                {
+                                    soal.apakahBenar = true
+                                    soal.apakahDijawab = true
+                                }
+                                else {
+                                    soal.apakahBenar = false
+                                    soal.apakahDijawab = true
+                                }
                             },
+
                             enabled = isOptionEnabled, //Bikin tidak bisa milih kalau udh submit
                             role = Role.RadioButton,
                         )

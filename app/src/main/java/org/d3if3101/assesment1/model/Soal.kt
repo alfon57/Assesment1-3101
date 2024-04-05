@@ -8,4 +8,5 @@ data class Soal(
     val jawaban2: Int,
     var apakahBenar: Boolean,
     val poinSoal: Int,
+    var apakahDijawab: Boolean,
     )

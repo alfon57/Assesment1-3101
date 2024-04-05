@@ -21,19 +21,22 @@ class MainViewModel : ViewModel ()
             R.string.persegi,// opsi1
             R.string.lingkaran,// opsi 2
                     false,//Apakah benar
-                    1//poinSoal
+                    1,
+                    false//poinSoal
                     )
         )
         data.add(Soal
-            (2.toLong(),
-            R.drawable.segitiga_,
-            R.string.segitiga,
-            R.string.segitiga,
-            R.string.persegi_panjang,
-                    false,
-                    1
+            (2.toLong(),//id
+            R.drawable.segitiga_,//gambar
+            R.string.segitiga,//nama gambar
+            R.string.segitiga,// opsi1
+            R.string.lingkaran,// opsi 2
+                    false,//Apakah benar
+                    1,
+                    false//poinSoal
                     )
         )
+
         return data
     }
 
