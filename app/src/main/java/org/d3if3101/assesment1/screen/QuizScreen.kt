@@ -1,5 +1,7 @@
 package org.d3if3101.assesment1.screen
 
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -89,6 +93,7 @@ fun QuizScreen(navController: NavHostController)
 @Composable
 fun QuizScreenContent(modifier: Modifier)
 {
+    val context = LocalContext.current
     //view model untuk ambil data di MainViewModel
     val viewModel: MainViewModel = viewModel()
     val data = viewModel.data
@@ -157,7 +162,7 @@ fun QuizScreenContent(modifier: Modifier)
                         Text(text = stringResource(id = R.string.submit))
                     }
 
-                    // Display total nilai text if the button is clicked
+                    // Display Button share,reset, dan text total nilai
                     if (keluarinTombol)
                     {
                         Column(
@@ -166,18 +171,17 @@ fun QuizScreenContent(modifier: Modifier)
                             verticalArrangement = Arrangement.Center
                         )
                         {
-                            //supaya nilai tidak minus
-                            if (nilai < 0)
-                            {
-                                nilai = 0
-                            }
-                            // Display total nilai text
-                            Text(
-                                text = stringResource(id = R.string.total_nilai, nilai),
-                                modifier = Modifier.padding(bottom = 16.dp),
-                                style = MaterialTheme.typography.bodyLarge,
-                                fontWeight = FontWeight.Bold,
-                            )
+
+                                // Display total nilai text
+                                Text(textAlign = TextAlign.Center,
+                                    text = stringResource(id = R.string.total_nilai_bagus, nama,nilai, stringResource(id = R.string.app_name)
+                                    ),
+                                    modifier = Modifier.padding(bottom = 16.dp),
+                                    style = MaterialTheme.typography.bodyLarge,
+
+                                )
+
+
                             //Tombol Share dan Reset
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp))
                             {
@@ -194,7 +198,13 @@ fun QuizScreenContent(modifier: Modifier)
                                 }
 
                                 //Share
-                                Button(onClick = { /*TODO*/ },
+                                Button(onClick = {
+                                    shareData(
+                                        context = context,
+                                        message = context.getString(R.string.pesan_share,nilai.toString(),context.getString(R.string.app_name).uppercase()
+                                        )
+                                    )
+                                },
                                     contentPadding = PaddingValues(horizontal = 32.dp,
                                         vertical = 16.dp)
                                 )
@@ -321,6 +331,18 @@ fun Pilihan(label: String, isSelected: Boolean, modifier: Modifier)
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(start = 2.dp)
         )
+    }
+}
+
+private fun shareData(context: Context, message: String)
+{
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT,message)
+    }
+    if(shareIntent.resolveActivity(context.packageManager) != null)
+    {
+        context.startActivity(shareIntent)
     }
 }
 
