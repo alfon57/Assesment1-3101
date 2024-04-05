@@ -3,6 +3,7 @@ package org.d3if3101.assesment1.screen
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -161,7 +162,12 @@ fun QuizScreenContent(modifier: Modifier)
                     Button(
                         onClick = {
                             namaError = (nama == "")
-                            if (namaError || !soal.apakahDijawab) return@Button
+                            if (namaError || !soal.apakahDijawab)
+                            {
+                                val pesan = context.getString(R.string.belum_dikerjakan)
+                                Toast.makeText(context, pesan, Toast.LENGTH_LONG).show()
+                                return@Button
+                            }
                             // melihat apakah tiap soal ada jawaban benar atau tidak
                             nilai = data.sumOf { if (it.apakahBenar) it.poinSoal else 0 }
                             keluarinTombol = true

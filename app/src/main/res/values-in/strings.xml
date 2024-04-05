@@ -19,4 +19,6 @@
     <string name="tentang_aplikasi">Tentang Aplikasi</string>
     <string name="copyright">Quiz bangun datar merupakan sebuah aplikasi Android untuk melatih         pengguna mengetahui bentuk-bentuk bangun datar</string>
     <string name="pesan_share">Lihat! Aku mendapatkan nilai %1$s Ayo coba pengetahuanmu juga di aplikasi %2$s</string>
+    <string name="belum_dikerjakan">Ada soal yang belum dikerjakan</string>
+    <string name="intro">Ayo mulai Quiz</string>
 </resources>

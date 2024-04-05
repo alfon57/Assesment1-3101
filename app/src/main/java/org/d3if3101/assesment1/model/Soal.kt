@@ -2,6 +2,7 @@ package org.d3if3101.assesment1.model
 
 data class Soal(
     val id: Long,
+    val idString: String,
     val gambar: Int,
     val namaGambar: Int,
     val jawaban1: Int,

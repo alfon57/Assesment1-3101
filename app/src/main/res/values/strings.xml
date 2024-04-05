@@ -10,10 +10,12 @@
     <string name="lingkaran">Lingkaran</string>
     <string name="segitiga">Segitiga</string>
     <string name="persegi">Persegi</string>
+    <string name="belum_dikerjakan">Ada soal yang belum dikerjakan</string>
     <string name="total_nilai_bagus">Selamat %1$s Total nilai kamu adalah : %2$s</string>
     <string name="total_nilai_jelek">Dikit lagi, Semangat %1$s\\nTotal nilai kamu adalah : %2$s</string>
     <string name="persegi_panjang">Persegi Panjang</string>
     <string name="gambar">Gambar %1$s</string>
+    <string name="intro">Ayo mulai Quiz</string>
     <string name="pesan_share">Lihat! Aku mendapatkan nilai %1$s Ayo coba pengetahuanmu juga di aplikasi %2$s</string>
     <string name="soal">%1$s. Apakah nama bangun datar dibawah?</string>
     <string name="tentang_aplikasi">Tentang Aplikasi</string>

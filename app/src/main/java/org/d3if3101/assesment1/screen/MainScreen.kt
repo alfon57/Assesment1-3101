@@ -70,7 +70,7 @@ fun ScreenContent(modifier: Modifier, navController: NavHostController)
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
-        Text(text = stringResource(id = R.string.app_name))
+        Text(text = stringResource(id = R.string.intro))
 
         Button(modifier = Modifier.padding(top = 16.dp),
             onClick =

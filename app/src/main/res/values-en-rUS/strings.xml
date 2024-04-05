@@ -19,4 +19,6 @@
     <string name="tentang_aplikasi">"About App "</string>
     <string name="copyright">Quiz Bangun Datar is an app designed to train the user to know the shapes name</string>
     <string name="pesan_share">Look! My score is %1$s Come lets try your skill too in %2$s app</string>
+    <string name="belum_dikerjakan">Theres a question that has not answered</string>
+    <string name="intro">Let\'s get started</string>
 </resources>
