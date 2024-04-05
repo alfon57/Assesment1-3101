@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Quiz Bangun Datar</string>
     <string name="kembali">Kembali</string>
@@ -14,8 +15,8 @@
     <string name="total_nilai_jelek">Dikit lagi, Semangat %1$s\\nTotal nilai kamu adalah : %2$s</string>
     <string name="persegi_panjang">Persegi Panjang</string>
     <string name="gambar">Gambar %1$s</string>
-    <string name="pesan_share">Lihat! Aku mendapatkan nilai %1$s Ayo coba pengetahuanmu juga di aplikasi %2$s</string>
     <string name="soal">%1$s. Apakah nama bangun datar dibawah?</string>
     <string name="tentang_aplikasi">Tentang Aplikasi</string>
     <string name="copyright">Quiz bangun datar merupakan sebuah aplikasi Android untuk melatih         pengguna mengetahui bentuk-bentuk bangun datar</string>
+    <string name="pesan_share">Lihat! Aku mendapatkan nilai %1$s Ayo coba pengetahuanmu juga di aplikasi %2$s</string>
 </resources>

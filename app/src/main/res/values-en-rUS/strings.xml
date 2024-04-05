@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quiz Bangun Datar</string>
+    <string name="kembali">Back</string>
+    <string name="nama">Name</string>
+    <string name="submit">Submit</string>
+    <string name="share">Share</string>
+    <string name="reset">Reset</string>
+    <string name="harus_diisi">Cannot be empty</string>
+    <string name="mulai">Start</string>
+    <string name="lingkaran">Circle</string>
+    <string name="segitiga">Triangle</string>
+    <string name="persegi">Square</string>
+    <string name="total_nilai_bagus">Congratulation %1$s your score is : %2$s</string>
+    <string name="total_nilai_jelek">So closee, keep up the spirit %1$s\\n Your total score is: %2$s</string>
+    <string name="persegi_panjang">Rectangle</string>
+    <string name="gambar">Picture of %1$s</string>
+    <string name="soal">%1$s. What is the name of the shape below</string>
+    <string name="tentang_aplikasi">"About App "</string>
+    <string name="copyright">Quiz Bangun Datar is an app designed to train the user to know the shapes name</string>
+    <string name="pesan_share">Look! My score is %1$s Come lets try your skill too in %2$s app</string>
+</resources>
