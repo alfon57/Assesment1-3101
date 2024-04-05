@@ -16,6 +16,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -100,6 +101,9 @@ fun QuizScreenContent(modifier: Modifier)
     var tombolSubmit by rememberSaveable {
         mutableStateOf(true)
     }
+    var namaError by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     //Kolom Halaman
     Column(modifier = Modifier.fillMaxWidth())
@@ -115,6 +119,9 @@ fun QuizScreenContent(modifier: Modifier)
             OutlinedTextField(value = nama,
                 onValueChange = {nama = it},
                 label = { Text(text = stringResource(id = R.string.nama))},
+                isError = namaError,
+                trailingIcon = { IconPicker(isError = namaError, unit = "")},
+                supportingText = { ErrorHint(isError = namaError)},
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Words,
@@ -136,6 +143,8 @@ fun QuizScreenContent(modifier: Modifier)
                     //Tombol submit
                     Button(
                         onClick = {
+                            namaError = (nama == "")
+                            if (namaError) return@Button
                             // melihat apakah tiap soal ada jawaban benar atau tidak
                             nilai = data.sumOf { if (it.apakahBenar) it.poinSoal else 0 }
                             keluarinTombol = true
@@ -277,6 +286,25 @@ fun ListSoal(soal: Soal, cekSubmit: Boolean) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun IconPicker(isError: Boolean, unit: String)
+{
+    if (isError)
+    {
+        Icon(imageVector = Icons.Filled.Warning, contentDescription = null)
+    } else{
+        Text(text = unit)}
+}
+
+@Composable
+fun ErrorHint(isError: Boolean)
+{
+    if(isError)
+    {
+        Text(text = stringResource(id = R.string.harus_diisi))
     }
 }
 
