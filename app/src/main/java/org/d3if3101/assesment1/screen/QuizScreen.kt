@@ -33,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -91,9 +92,9 @@ fun QuizScreenContent(modifier: Modifier)
     val viewModel: MainViewModel = viewModel()
     val data = viewModel.data
 
-    var nama by remember{ mutableStateOf("") }
-    var nilai by remember{ mutableIntStateOf(0) }
-    var keluarinTombol by remember {
+    var nama by rememberSaveable{ mutableStateOf("") }
+    var nilai by rememberSaveable{ mutableIntStateOf(0) }
+    var keluarinTombol by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -124,7 +125,7 @@ fun QuizScreenContent(modifier: Modifier)
         //Kolom soal
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             items(data) { soal ->
-                ListSoal(soal = soal) { addedNilai ->
+                ListSoal(soal = soal, keluarinTombol) { addedNilai ->
                     nilai += addedNilai // Update nilai variable based on the callback from ListSoal
                 }
 
@@ -135,6 +136,7 @@ fun QuizScreenContent(modifier: Modifier)
                     Button(
                         onClick = {
                             keluarinTombol = true
+                            nilai
                         },
                         modifier = Modifier.padding(16.dp),
                         contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
@@ -150,6 +152,10 @@ fun QuizScreenContent(modifier: Modifier)
                             verticalArrangement = Arrangement.Center
                         )
                         {
+                            if (nilai < 0)
+                            {
+                                nilai = 0
+                            }
                             // Display total nilai text
                             Text(
                                 text = stringResource(id = R.string.total_nilai, nilai),
@@ -190,7 +196,7 @@ fun QuizScreenContent(modifier: Modifier)
 }
 
 @Composable
-fun ListSoal(soal: Soal, onNilaiUpdated: (Int) -> Unit) {
+fun ListSoal(soal: Soal, cekSubmit: Boolean, onNilaiUpdated: (Int) -> Unit) {
 
     val context = LocalContext.current
     // Data Pilihan
@@ -199,17 +205,19 @@ fun ListSoal(soal: Soal, onNilaiUpdated: (Int) -> Unit) {
         stringResource(id = soal.jawaban2)
     )
 
-    var jawaban by remember {
+    val viewModel: MainViewModel = viewModel()
+    val data = viewModel.data
+
+    var jawaban by rememberSaveable {
         mutableStateOf("")
     }
 
-    var hasClicked by remember { mutableStateOf(false) }
+    var hasClicked by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        // spacedBy untuk kasi space bagi setiap komponen di dalam kolom
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -220,15 +228,13 @@ fun ListSoal(soal: Soal, onNilaiUpdated: (Int) -> Unit) {
         Image(
             painter = painterResource(id = soal.gambar),
             contentDescription = stringResource(id = R.string.gambar, soal.nama_gambar),
-            contentScale = ContentScale.Crop,
             modifier = Modifier.size(132.dp)
-
         )
 
         // Pilgan
-        Row ()
-        {
+        Row {
             radioOptions.forEach { text ->
+                val isOptionEnabled = !cekSubmit // Disable options if cekSubmit is true
                 Pilihan(
                     label = text,
                     isSelected = jawaban == text,
@@ -237,11 +243,17 @@ fun ListSoal(soal: Soal, onNilaiUpdated: (Int) -> Unit) {
                             selected = jawaban == text,
                             onClick = {
                                 jawaban = text
-                                if (!hasClicked && text == context.getString(soal.nama_gambar)) {
-                                    onNilaiUpdated(1) // Add value only if the question is not answered and it's correct
+                                if(!hasClicked)
+                                {
+                                    if (text == context.getString(soal.nama_gambar)) {
+                                        onNilaiUpdated(1) // Add value only if the question is not answered and it's correct
+                                    } else if (text != context.getString(soal.nama_gambar)) {
+                                        onNilaiUpdated(0)
+                                    }
                                     hasClicked = true // Mark the question as answered
                                 }
                             },
+                            enabled = isOptionEnabled, // Disable options if cekSubmit is true
                             role = Role.RadioButton,
                         )
                         .weight(1f)
@@ -251,6 +263,7 @@ fun ListSoal(soal: Soal, onNilaiUpdated: (Int) -> Unit) {
         }
     }
 }
+
 
 
 @Composable
