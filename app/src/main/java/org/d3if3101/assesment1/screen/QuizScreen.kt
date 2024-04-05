@@ -32,12 +32,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -85,6 +83,8 @@ fun QuizScreen(navController: NavHostController)
     }
 }
 
+
+
 @Composable
 fun QuizScreenContent(modifier: Modifier)
 {
@@ -125,33 +125,35 @@ fun QuizScreenContent(modifier: Modifier)
         //Kolom soal
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             items(data) { soal ->
-                ListSoal(soal = soal, keluarinTombol) { addedNilai ->
-                    nilai += addedNilai // Update nilai variable based on the callback from ListSoal
-                }
+                ListSoal(soal = soal, keluarinTombol)
 
                 //bikin tombol submit muncul di soal paling terakhir
                 if (soal.id.toInt() == data.size)
                 {
-                    // Tombol submit
+                    //Tombol submit
                     Button(
                         onClick = {
+                            // melihat apakah tiap soal ada jawaban benar atau tidak
+                            nilai = data.sumOf { if (it.apakahBenar) it.poinSoal else 0 }
                             keluarinTombol = true
-                            nilai
                         },
+                        enabled = !keluarinTombol,
                         modifier = Modifier.padding(16.dp),
                         contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
                     ) {
                         Text(text = stringResource(id = R.string.submit))
                     }
 
-
-                    if(keluarinTombol)
+                    // Display total nilai text if the button is clicked
+                    if (keluarinTombol)
                     {
-                        Column(modifier = Modifier.padding(bottom = 20.dp),
+                        Column(
+                            modifier = Modifier.padding(bottom = 20.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         )
                         {
+                            //supaya nilai tidak minus
                             if (nilai < 0)
                             {
                                 nilai = 0
@@ -184,9 +186,7 @@ fun QuizScreenContent(modifier: Modifier)
                                     Text(text = "Share")
                                 }
                             }
-
                         }
-
                     }
                 }
                 Divider()
@@ -195,25 +195,26 @@ fun QuizScreenContent(modifier: Modifier)
     }
 }
 
-@Composable
-fun ListSoal(soal: Soal, cekSubmit: Boolean, onNilaiUpdated: (Int) -> Unit) {
 
+//Compose Soal
+@Composable
+fun ListSoal(soal: Soal, cekSubmit: Boolean) {
+
+    //context untuk jadiin soal.namaGambar string
     val context = LocalContext.current
+
     // Data Pilihan
     val radioOptions = listOf(
         stringResource(id = soal.jawaban1),
         stringResource(id = soal.jawaban2)
     )
 
-    val viewModel: MainViewModel = viewModel()
-    val data = viewModel.data
-
+    //Save jawaban
     var jawaban by rememberSaveable {
         mutableStateOf("")
     }
 
-    var hasClicked by rememberSaveable { mutableStateOf(false) }
-
+    //Kolom konten
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -227,14 +228,20 @@ fun ListSoal(soal: Soal, cekSubmit: Boolean, onNilaiUpdated: (Int) -> Unit) {
         // Gambar
         Image(
             painter = painterResource(id = soal.gambar),
-            contentDescription = stringResource(id = R.string.gambar, soal.nama_gambar),
+            contentDescription = stringResource(id = R.string.gambar, soal.namaGambar),
             modifier = Modifier.size(132.dp)
         )
 
-        // Pilgan
+        // Pilihan
         Row {
             radioOptions.forEach { text ->
-                val isOptionEnabled = !cekSubmit // Disable options if cekSubmit is true
+                //cek submit itu parameter dari function nya
+                //jadi cekSubmit bisa dirubah dari function QuizScreenContent
+                //karena function listSoal dipakai disana
+                //dia berubah jika button submit di QuizScreenContent ditekan
+                //kalau true jadi engga bisa milih lagi
+                val isOptionEnabled = !cekSubmit
+
                 Pilihan(
                     label = text,
                     isSelected = jawaban == text,
@@ -243,17 +250,19 @@ fun ListSoal(soal: Soal, cekSubmit: Boolean, onNilaiUpdated: (Int) -> Unit) {
                             selected = jawaban == text,
                             onClick = {
                                 jawaban = text
-                                if(!hasClicked)
-                                {
-                                    if (text == context.getString(soal.nama_gambar)) {
-                                        onNilaiUpdated(1) // Add value only if the question is not answered and it's correct
-                                    } else if (text != context.getString(soal.nama_gambar)) {
-                                        onNilaiUpdated(0)
-                                    }
-                                    hasClicked = true // Mark the question as answered
-                                }
+
+//                                if (text == context.getString(soal.namaGambar))
+//                                {
+//                                    soal.apakahBenar = true
+//                                }
+//                                else {
+//                                    soal.apakahBenar = false
+//                                }
+//                                disederhanakan jadi dibawah
+
+                                soal.apakahBenar = text == context.getString(soal.namaGambar)
                             },
-                            enabled = isOptionEnabled, // Disable options if cekSubmit is true
+                            enabled = isOptionEnabled, //Bikin tidak bisa milih kalau udh submit
                             role = Role.RadioButton,
                         )
                         .weight(1f)
@@ -264,8 +273,7 @@ fun ListSoal(soal: Soal, cekSubmit: Boolean, onNilaiUpdated: (Int) -> Unit) {
     }
 }
 
-
-
+//Style Radio Button
 @Composable
 fun Pilihan(label: String, isSelected: Boolean, modifier: Modifier)
 {

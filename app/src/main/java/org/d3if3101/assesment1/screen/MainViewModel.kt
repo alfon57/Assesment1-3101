@@ -15,28 +15,24 @@ class MainViewModel : ViewModel ()
         val data = mutableListOf<Soal>()
 
         data.add(Soal
-            (1.toLong(),
-            R.drawable.lingkaran_, R.string.lingkaran,
-            R.string.persegi,
-            R.string.lingkaran)
+            (1.toLong(),//id
+            R.drawable.lingkaran_,//gambar
+            R.string.lingkaran,//nama gambar
+            R.string.persegi,// opsi1
+            R.string.lingkaran,// opsi 2
+                    false,//Apakah benar
+                    1//poinSoal
+                    )
         )
         data.add(Soal
             (2.toLong(),
-            R.drawable.segitiga_, R.string.segitiga,
+            R.drawable.segitiga_,
             R.string.segitiga,
-            R.string.persegi_panjang)
-        )
-        data.add(Soal
-            (3.toLong(),
-            R.drawable.persegi_, R.string.persegi,
-            R.string.persegi,
-            R.string.persegi_panjang)
-        )
-        data.add(Soal
-            (4.toLong(),
-            R.drawable.persegi_panjang_, R.string.persegi_panjang,
             R.string.segitiga,
-            R.string.persegi_panjang)
+            R.string.persegi_panjang,
+                    false,
+                    1
+                    )
         )
         return data
     }
