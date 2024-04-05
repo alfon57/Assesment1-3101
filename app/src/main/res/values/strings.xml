@@ -3,6 +3,9 @@
     <string name="kembali">Kembali</string>
     <string name="nama">Nama</string>
     <string name="submit">Submit</string>
+    <string name="share">Bagikan</string>
+    <string name="reset">Ulang</string>
+    <string name="harus_diisi">Belum Diisi</string>
     <string name="mulai">Mulai</string>
     <string name="lingkaran">Lingkaran</string>
     <string name="segitiga">Segitiga</string>

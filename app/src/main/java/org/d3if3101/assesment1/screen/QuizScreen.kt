@@ -97,6 +97,9 @@ fun QuizScreenContent(modifier: Modifier)
     var keluarinTombol by rememberSaveable {
         mutableStateOf(false)
     }
+    var tombolSubmit by rememberSaveable {
+        mutableStateOf(true)
+    }
 
     //Kolom Halaman
     Column(modifier = Modifier.fillMaxWidth())
@@ -136,8 +139,9 @@ fun QuizScreenContent(modifier: Modifier)
                             // melihat apakah tiap soal ada jawaban benar atau tidak
                             nilai = data.sumOf { if (it.apakahBenar) it.poinSoal else 0 }
                             keluarinTombol = true
+                            tombolSubmit = false
                         },
-                        enabled = !keluarinTombol,
+                        enabled = tombolSubmit,
                         modifier = Modifier.padding(16.dp),
                         contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
                     ) {
@@ -169,12 +173,15 @@ fun QuizScreenContent(modifier: Modifier)
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp))
                             {
                                 //Reset
-                                Button(onClick = { /*TODO*/ },
+                                Button(onClick = {nama = ""
+                                                 keluarinTombol = false
+                                    tombolSubmit = true
+                                                 },
                                     contentPadding = PaddingValues(horizontal = 32.dp,
                                         vertical = 16.dp)
                                 )
                                 {
-                                    Text(text = "Reset")
+                                    Text(text = stringResource(id = R.string.reset))
                                 }
 
                                 //Share
@@ -183,7 +190,7 @@ fun QuizScreenContent(modifier: Modifier)
                                         vertical = 16.dp)
                                 )
                                 {
-                                    Text(text = "Share")
+                                    Text(text = stringResource(id = R.string.share))
                                 }
                             }
                         }
