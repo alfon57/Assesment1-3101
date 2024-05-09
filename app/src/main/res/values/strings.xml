@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Assesment 1</string>
+    <string name="app_name">Assesment 2</string>
+    <string name="list_kosong">Belum ada data</string>
+    <string name="x_diklik">%1$s diklik!</string>
+    <string name="tambah_catatan">Tambah ToDoList</string>
+    <string name="tambah_error">Belum bisa tambah ToDoList</string>
 </resources>
