@@ -1,4 +1,4 @@
-package org.d3if3101.assesment1
+package org.d3if3101.assesment2
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import org.d3if3101.assesment1.ui.theme.Assesment1Theme
+import org.d3if3101.assesment2.ui.theme.Assesment1Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
