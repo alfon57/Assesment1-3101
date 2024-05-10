@@ -4,6 +4,7 @@ data class ToDoList(
     val id: Long,
     val judul: String,
     val isi: String,
-    val status: Boolean,
+    val prioritas: Int,
+    val status: String,
     val tanggal: String
 )

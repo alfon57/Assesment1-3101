@@ -2,6 +2,12 @@
     <string name="app_name">Assesment 2</string>
     <string name="list_kosong">Belum ada data</string>
     <string name="x_diklik">%1$s diklik!</string>
-    <string name="tambah_catatan">Tambah ToDoList</string>
-    <string name="tambah_error">Belum bisa tambah ToDoList</string>
+    <string name="tambah_todolist">Tambah ToDoList</string>
+    <string name="judul">Judul</string>
+    <string name="isi">Isi</string>
+    <string name="tambah_data">Tambah Data</string>
+    <string name="kembali">Kembali</string>
+    <string name="simpan">Simpan</string>
+    <string name="edit_data">Ubah Data</string>
+    <string name="status_selesai">Selesai</string>
 </resources>

@@ -1,7 +1,6 @@
 package org.d3if3101.assesment1.ui.screen
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,22 +24,24 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import org.d3if3101.assesment1.R
 import org.d3if3101.assesment1.model.ToDoList
+import org.d3if3101.assesment1.navigation.Screen
 import org.d3if3101.assesment1.ui.theme.Assesment1Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen()
+fun MainScreen(navController: NavHostController)
 {
-    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) }
@@ -53,25 +54,24 @@ fun MainScreen()
         },
         floatingActionButton =
         {
-            FloatingActionButton(onClick = {Toast.makeText(context, R.string.tambah_error, Toast.LENGTH_SHORT).show()})
+            FloatingActionButton(onClick = {navController.navigate(Screen.FormBaru.route)})
             {
                 Icon(imageVector = Icons.Filled.Add,
-                    contentDescription = stringResource(id = R.string.tambah_catatan),
+                    contentDescription = stringResource(id = R.string.tambah_data),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
     ) {padding ->
-        ScreenContent(Modifier.padding(padding))
+        ScreenContent(Modifier.padding(padding), navController)
     }
 }
 
 @Composable
-fun ScreenContent(modifier: Modifier)
+fun ScreenContent(modifier: Modifier, navController: NavHostController)
 {
-    val viewModel : MainViewModel = viewModel()
+    val  viewModel : MainViewModel = viewModel()
     val data = viewModel.data
-    val context = LocalContext.current
 
     if(data.isEmpty())
     {
@@ -88,7 +88,6 @@ fun ScreenContent(modifier: Modifier)
     }
     else
     {
-
         LazyColumn (modifier = modifier
             .fillMaxSize(),
             contentPadding = PaddingValues(bottom = 84.dp)
@@ -98,8 +97,7 @@ fun ScreenContent(modifier: Modifier)
             {
                 ListItem(toDoList = it)
                 {
-                    val pesan = context.getString(R.string.x_diklik, it.judul)
-                    Toast.makeText(context,pesan,Toast.LENGTH_SHORT).show()
+                    navController.navigate(Screen.FormUbah.withId(it.id))
                 }
                 Divider()
             }
@@ -125,12 +123,10 @@ fun ListItem(toDoList: ToDoList,
             fontWeight = FontWeight.Bold
         )
         Text(text = toDoList.isi,
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
-        Text(text = toDoList.tanggal,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis)
+        Text(text = toDoList.tanggal)
     }
 }
 
@@ -139,6 +135,6 @@ fun ListItem(toDoList: ToDoList,
 @Composable
 fun GreetingPreview() {
     Assesment1Theme {
-        MainScreen()
+        MainScreen(rememberNavController())
     }
 }

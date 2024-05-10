@@ -11,16 +11,15 @@ class MainViewModel : ViewModel()
     private fun  getDataDummy(): List<ToDoList>
     {
         val data = mutableListOf<ToDoList>()
-
         data.add(
             ToDoList(1.toLong(),
-            "Nyuci Baju",
-            "Bawa baju kotor ke ibu laundry",
-            false,
-            "22"
+                "Fretty",
+                "6706223148",
+                5,
+                "Selesai",
+                "22"
             )
         )
-
         return data
     }
 }
