@@ -15,6 +15,12 @@ interface ToDoDao {
     @Update
     suspend fun update(toDoList: ToDoList)
 
-    @Query("SELECT * FROM toDoList ORDER BY tanggal DESC")
+    @Query("SELECT * FROM toDoList ORDER BY prioritas DESC, tanggal DESC")
     fun getToDoList(): Flow<List<ToDoList>>
+
+    @Query("SELECT * FROM toDoList WHERE id = :id")
+    suspend fun getToDoListById(id: Long): ToDoList?
+
+    @Query("DELETE FROM toDoList WHERE id = :id")
+    suspend fun deleteById(id: Long)
 }

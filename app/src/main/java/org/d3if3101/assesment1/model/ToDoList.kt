@@ -9,7 +9,7 @@ data class ToDoList(
     val id: Long = 0L,
     val judul: String,
     val isi: String,
-    val prioritas: Int,
+    var prioritas: String,
     val status: String,
     val tanggal: String
 )

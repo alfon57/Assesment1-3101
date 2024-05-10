@@ -22,8 +22,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,9 +37,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import org.d3if3101.assesment1.R
+import org.d3if3101.assesment1.database.ToDoDB
 import org.d3if3101.assesment1.model.ToDoList
 import org.d3if3101.assesment1.navigation.Screen
 import org.d3if3101.assesment1.ui.theme.Assesment1Theme
+import org.d3if3101.assesment1.util.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +63,7 @@ fun MainScreen(navController: NavHostController)
             FloatingActionButton(onClick = {navController.navigate(Screen.FormBaru.route)})
             {
                 Icon(imageVector = Icons.Filled.Add,
-                    contentDescription = stringResource(id = R.string.tambah_data),
+                    contentDescription = stringResource(id = R.string.tambah_todolist),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -70,8 +76,12 @@ fun MainScreen(navController: NavHostController)
 @Composable
 fun ScreenContent(modifier: Modifier, navController: NavHostController)
 {
-    val  viewModel : MainViewModel = viewModel()
-    val data = viewModel.data
+    val context = LocalContext.current
+    val db = ToDoDB.getInstance(context)
+    val factory = ViewModelFactory(db.dao)
+
+    val  viewModel : MainViewModel = viewModel(factory = factory)
+    val data by viewModel.data.collectAsState()
 
     if(data.isEmpty())
     {
@@ -117,16 +127,36 @@ fun ListItem(toDoList: ToDoList,
         .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp))
     {
-        Text(text = toDoList.judul,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            fontWeight = FontWeight.Bold
-        )
-        Text(text = toDoList.isi,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(text = toDoList.tanggal)
+        if(toDoList.status == "Selesai"){
+            toDoList.prioritas = "1"
+
+            Text(text = toDoList.judul,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(text = toDoList.isi,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.blur(3.dp)
+            )
+            Text(
+                text = toDoList.tanggal,
+                modifier = Modifier.blur(3.dp)
+            )
+        }else{
+            Text(text = toDoList.judul,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontWeight = FontWeight.Bold
+            )
+            Text(text = toDoList.isi,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(text = toDoList.tanggal)
+        }
+
     }
 }
 

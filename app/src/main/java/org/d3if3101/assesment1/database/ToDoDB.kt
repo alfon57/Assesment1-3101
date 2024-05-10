@@ -22,7 +22,7 @@ abstract class ToDoDB : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         ToDoDB::class.java,
-                        "toDoList.db"
+                        "toDo.db"
                     ).build()
                     INSTANCE = instance
                 }
