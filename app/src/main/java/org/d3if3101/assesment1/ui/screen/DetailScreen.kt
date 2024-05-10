@@ -59,7 +59,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null)
         mutableStateOf("")
     }
     var status by remember {
-        mutableStateOf("")
+        mutableStateOf("!Selesai")
     }
 
     var prioritas by remember {
@@ -235,7 +235,6 @@ fun FormToDoList(
                 }
             }
 
-            statusBaru = "Tidak"
         }
 
     }
