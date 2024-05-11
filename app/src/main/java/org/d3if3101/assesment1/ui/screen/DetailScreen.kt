@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
@@ -32,7 +34,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,7 +65,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null)
 
     val viewModel: DetailViewModel = viewModel(factory = factory)
 
-    var judul by rememberSaveable {
+    var judul by remember {
         mutableStateOf("")
     }
     var isi by remember {
@@ -137,10 +138,17 @@ fun DetailScreen(navController: NavHostController, id: Long? = null)
 
                 actions = {
                     IconButton(onClick = {
+                        //Jika ID Kosong maka judul isi dan prioritas wajib diisi
                         if (judul == "" || isi == "" || prioritas == ""){
                             Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
                             return@IconButton
-                        }else if(id != null && status != "Selesai"){
+                        }
+                        //Jika ID tidak Kosong dan statusnya menjadi belum selesai maka prioritas
+                        // wajib diisi
+                        //Hal ini untuk mencegah jika suatu to do list dibuat dari selesai menjadi
+                        //tidak selesai maka priotitas harus diisi kembali karena jika selesai
+                        //prioritas menjadi 0
+                        else if(id != null && status != "Selesai"){
                             if(prioritas == "0"){
                                 Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
                                 return@IconButton
@@ -217,6 +225,7 @@ fun FormToDoList(
     Column (
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ){
