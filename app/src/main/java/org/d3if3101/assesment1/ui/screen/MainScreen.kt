@@ -128,7 +128,6 @@ fun ListItem(toDoList: ToDoList,
         verticalArrangement = Arrangement.spacedBy(8.dp))
     {
         if(toDoList.status == "Selesai"){
-            toDoList.prioritas = "1"
 
             Text(text = toDoList.judul,
                 maxLines = 1,

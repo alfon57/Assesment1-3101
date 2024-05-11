@@ -82,6 +82,10 @@ fun DetailScreen(navController: NavHostController, id: Long? = null)
         mutableStateOf(true)
     }
 
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+
     LaunchedEffect(true){
         if (id == null) return@LaunchedEffect
         val data = viewModel.getToDoList(id) ?:return@LaunchedEffect
@@ -157,6 +161,12 @@ fun DetailScreen(navController: NavHostController, id: Long? = null)
                     }
                     if (id != null){
                         DeleteAction {
+                            showDialog = true
+                        }
+                        DisplayAlertDialog(
+                            openDialog = showDialog,
+                            onDismissRequest = { showDialog = false }) {
+                            showDialog = false
                             viewModel.delete(id)
                             navController.popBackStack()
                         }

@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Assesment 2</string>
     <string name="list_kosong">Belum ada ToDoList</string>
-    <string name="x_diklik">%1$s diklik!</string>
     <string name="tambah_todolist">Tambah ToDoList</string>
     <string name="judul">Judul</string>
     <string name="isi">Isi</string>
@@ -14,6 +13,9 @@
     <string name="opsi_5">5</string>
     <string name="lainnya">Opsi lainnya</string>
     <string name="hapus">Hapus ToDoList</string>
+    <string name="tombol_hapus">Hapus</string>
+    <string name="pesan_hapus">Hapus ToDoList ini?</string>
+    <string name="batal">Batal</string>
     <string name="edit_data">Ubah ToDoList</string>
     <string name="status_selesai">Selesai</string>
     <string name="status_blmselesai">Belum Selesai</string>
